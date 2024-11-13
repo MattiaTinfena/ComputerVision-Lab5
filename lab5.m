@@ -32,55 +32,34 @@ end
 image_files = {"ur_c_s_03a_01_L_0376.png", "ur_c_s_03a_01_L_0377.png", "ur_c_s_03a_01_L_0378.png","ur_c_s_03a_01_L_0379.png", "ur_c_s_03a_01_L_0380.png", "ur_c_s_03a_01_L_0381.png"};
 
 %Red car
-figure;
-for k = 1:length(image_files)  
-    
-    img_k = imread(image_files{k});
-    img_k_gray = rgb2gray(img_k);    
-    score_map = normxcorr2(T, img_k_gray);
 
-    [xsm, ysm] = size(score_map);
-    [xim, yim, channels] = size(img_k);
-    xdiff = (xsm - xim)/2;
-    ydiff = (ysm - yim)/2;
-    [ypeak, xpeak] = find(score_map == max(score_map(:)),1);  
-    xoffset = xpeak - xdiff;
-    yoffset = ypeak - ydiff;
-    
-    %print
+figure;
+for k = 1:length(image_files)
+    [xoffset, yoffset] = ncc(image_files{k}, T);
+    [centroid, bounding_box] = cbs(image_files{k});
     subplot(2, 3, k)  
-    imshow(img_k);
+    imshow(image_files{k});
     hold on;    
-    rectangle('Position', [xoffset - (size(T,2) / 2), yoffset - (size(T,1) / 2), size(T,2), size(T,1)],'EdgeColor', 'r', 'LineWidth', 2);    
-    plot(xoffset, yoffset, 'r*', 'MarkerSize', 4, 'LineWidth', 4);
+    rectangle('Position', [xoffset - (size(T,2) / 2), yoffset - (size(T,1) / 2), size(T,2), size(T,1)],'EdgeColor', 'b', 'LineWidth', 2);    
+    plot(xoffset, yoffset, '*b', 'LineWidth', 2);
+    plot(centroid(1), centroid(2),'*g')
+    rectangle('Position',bounding_box,'EdgeColor','g', 'LineWidth', 2)
     title(['Detected Position in Image ', num2str(k)]);
     hold off;
 end
 
+
 %Dark car
 for i = 1:3
-    figure;
     tic;
-    for k = 1:length(image_files)  
-        
-        img_k = imread(image_files{k});
-        img_k_gray = rgb2gray(img_k);    
-        score_map = normxcorr2(t{i}, img_k_gray);
-
-        [xsm, ysm] = size(score_map);
-        [xim, yim, channels] = size(img_k);
-        xdiff = (xsm - xim)/2;
-        ydiff = (ysm - yim)/2;
-        [ypeak, xpeak] = find(score_map == max(score_map(:)), 1);  
-        xoffset = xpeak - xdiff;
-        yoffset = ypeak - ydiff;
-        
-        %print
+    figure;
+    for k = 1:length(image_files)
+        [xoffset, yoffset] = ncc(image_files{k}, t{i});
         subplot(2, 3, k)  
-        imshow(img_k);
+        imshow(image_files{k});
         hold on;    
-        rectangle('Position', [xoffset - (size(t{i},2) / 2), yoffset - (size(t{i},1) / 2), size(T,2), size(T,1)],'EdgeColor', 'r', 'LineWidth', 2);    
-        plot(xoffset, yoffset, 'ro', 'MarkerSize', 4, 'LineWidth', 4);
+        rectangle('Position', [xoffset - (size(t{i},2) / 2), yoffset - (size(t{i},1) / 2), size(t{i},2), size(t{i},1)],'EdgeColor', 'r', 'LineWidth', 2);    
+        plot(xoffset, yoffset, 'r*', 'MarkerSize', 4, 'LineWidth', 4);
         title(['Detected Position in Image ', num2str(k)]);
         hold off;
     end
