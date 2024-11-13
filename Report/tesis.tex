@@ -1,0 +1,98 @@
+\documentclass[12pt, a4paper]{report}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{times}
+\usepackage{geometry}
+\usepackage{csquotes}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+\usepackage{lipsum}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage[style = apa, backend = biber]{biblatex}
+\usepackage{setspace}
+\usepackage{array}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{esdiff}
+\usepackage{titlesec}  % Importa il pacchetto titlesec per personalizzare lo stile del capitolo
+\usepackage{titletoc}
+\usepackage{subcaption}
+
+% Imposta il formato dei capitoli sulla stessa riga senza salto pagina
+\titleformat{\chapter}[hang] 
+  {\normalfont\LARGE\bfseries} % Formato testo
+  {Chapter \thechapter:} % Mostra "Chapter X:" 
+  {1em} % Spazio tra "Chapter X:" e il titolo
+  {} % Nessuna modifica aggiuntiva
+
+% Rimuovi il salto di pagina con titlespacing
+\titlespacing*{\chapter}{0pt}{-20pt}{20pt}  % Nessun salto pagina
+
+% Configurazioni di default
+\renewcommand{\thechapter}{\Roman{chapter}}
+\renewcommand{\thesection}{\arabic{chapter}.\arabic{section}}
+\renewcommand{\thesubsection}{\arabic{chapter}.\arabic{section}.\arabic{subsection}}
+\renewcommand{\thetable}{\arabic{chapter}.\arabic{table}}
+\renewcommand{\thefigure}{\arabic{chapter}.\arabic{figure}}
+\renewcommand{\theequation}{\arabic{chapter}.\arabic{equation}}
+\usepackage{caption}
+\captionsetup[figure]{labelformat=simple, labelsep=none, labelfont={bf}, textfont={}, singlelinecheck=off}
+\DeclareCaptionFormat{custom}{#1#2\\#3} 
+\captionsetup[figure]{format=custom}
+\captionsetup[table] {labelformat=simple, labelsep=none, labelfont={bf}, textfont={it}, singlelinecheck=off}
+\renewcommand{\tablename}{Tabla}
+\captionsetup[table]{format=custom}
+
+% Recursos bibliográficos
+\addbibresource{ref.bib}
+
+% Formato di pagina
+\geometry{a4paper, left=3.5cm,right=2.54cm,top=2.54cm,bottom=2.54cm}
+\setlength{\parindent}{2em}
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\renewcommand{\headrulewidth}{0pt} % no line in header area
+\fancyfoot[R]{\thepage} % page number in the right footer
+\fancypagestyle{plain}{%
+  \fancyhf{} % clear all header and footer fields
+  \fancyfoot[R]{\thepage} % page number in the right footer
+}
+\begin{document}
+
+% Frontespizio con Table of Contents
+\begin{titlepage}
+    \centering
+    {\scshape\large University of Genova \par}
+    \vspace{0.3cm}
+    {\scshape\large Department of Computer Science, Bioengineering, Robotics and System Engineering (DIBRIS) \par}
+    \vspace{0.3cm}
+    \includegraphics[width=0.2\textwidth]{mainmatter/Images/Unige-logo.jpeg}\\[0.3cm]
+    
+    {\LARGE\bfseries COMPUTER VISION \par}
+    \vfill
+    {\scshape\large Lab Session n.5 \par}
+    \vfill
+    
+    \begin{minipage}[t]{0.45\textwidth}
+        \begin{flushleft} \large
+            7852527 - Mattia Tinfena\\
+            6504193 - Elisa Martinenghi\\
+            7687956 - Chiara Buono
+        \end{flushleft}
+    \end{minipage}
+    
+    \vfill
+
+\end{titlepage}
+
+% Inizio del documento principale
+\pagenumbering{arabic}  % Riprendi la numerazione delle pagine da qui
+\input{mainmatter/lab}
+
+\end{document}
