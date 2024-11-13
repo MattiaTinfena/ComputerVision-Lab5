@@ -41,6 +41,45 @@ For the black car we also wanted to see what changed using different sizes of te
 \chapter{Harris corner detection}
 
 
+The Harris Corner Detector is a method used for detecting corners by identifying points with a significant gradient change in all directions. 
+In fact, a corner is a point whose local neighborhood stands in two dominant and different edge directions. Therefore, the Harris Corner Detector finds the difference in intensity for a shift $(u, v)$ in all directions. This is expressed as below:
+
+\begin{equation}
+	E(u, v) = \sum_{x, y} w(x, y) [I(x+u, y+v)-I(x, y)]^2 \approx \sum_{x, y} I_x^2 u^2 + 2I_x I_y uv + I_y^2 v^2
+\end{equation}
+where for small motion, first-order Taylor approximation can be used.
+
+% add why we write this equation
+
+Estimates of derivatives are generally important, because a sharp change in an image could be associated with the boundary of an object. Therefore, such changes are associated with large gradients. Given the Sobel filters (\ref{eq:dx} and \ref{eq:dy}), we can compute both the partial derivative of the image in x and y direction and their second derivatives (see figure INSERT FIGURE).
+
+\begin{minipage}{0.45\textwidth}
+	\centering
+	\begin{equation}
+		dx = \begin{bmatrix}
+			1 & 0 & -1 \\
+			2 & 0 & -2 \\
+			1 & 0 & -1
+		\end{bmatrix}
+		\label{eq:dx}
+	\end{equation}
+\end{minipage}
+\hfill 
+\begin{minipage}{0.45\textwidth}
+	\centering
+	\begin{equation}
+		dy = \begin{bmatrix}
+			1 & 2 & 1 \\
+			0 & 0 & 0 \\
+			-1 & -2 & -1
+		\end{bmatrix}
+		\label{eq:dy}
+	\end{equation}
+\end{minipage}
+
+After applying a Gaussian filter to reduce the noise, the structure tensor 
+$𝑀$ and the response of the Harris detector $R$ are computed for each pixel.
+
 \newpage
 \section*{Conclusions}
 
