@@ -39,19 +39,13 @@ For the black car we also wanted to see what changed using different sizes of te
 
 
 \chapter{Harris corner detection}
-
-
-The Harris Corner Detector is a method used for detecting corners by identifying points with a significant gradient change in all directions. 
-In fact, a corner is a point whose local neighborhood stands in two dominant and different edge directions. Therefore, the Harris Corner Detector finds the difference in intensity for a shift $(u, v)$ in all directions. This is expressed as below:
+The Harris Corner Detector is a method used to detect corners by identifying points with significant gradient changes in all directions. Specifically, a corner is a point whose local neighborhood exhibits two dominant and distinct edge directions. Accordingly, the Harris Corner Detector finds these difference in intensity for a given shift $(u, v)$ in all possible directions, which can be expressed mathematically in terms of both shift and derivatives for small motions as follows:
 
 \begin{equation}
 	E(u, v) = \sum_{x, y} w(x, y) [I(x+u, y+v)-I(x, y)]^2 \approx \sum_{x, y} I_x^2 u^2 + 2I_x I_y uv + I_y^2 v^2
 \end{equation}
-where for small motion, first-order Taylor approximation can be used.
 
-% add why we write this equation
-
-Estimates of derivatives are generally important, because a sharp change in an image could be associated with the boundary of an object. Therefore, such changes are associated with large gradients. Given the Sobel filters (\ref{eq:dx} and \ref{eq:dy}), we can compute both the partial derivative of the image in x and y direction and their second derivatives (see figure INSERT FIGURE).
+In fact, estimating derivatives is generally important, as sharp changes in an image can be associated with object boundaries. Using Sobel filters, we can compute the partial derivatives of the image in the x and y directions, as well as their second derivatives (see figure \ref{fig:partial-derivative-and-gaussian-filter}).
 
 \begin{minipage}{0.45\textwidth}
 	\centering
@@ -77,9 +71,27 @@ Estimates of derivatives are generally important, because a sharp change in an i
 	\end{equation}
 \end{minipage}
 
-After applying a Gaussian filter to reduce the noise, the structure tensor 
-$𝑀$ and the response of the Harris detector $R$ are computed for each pixel.
+After applying a Gaussian filter to reduce noise, the structure tensor textit{M} and the response of the Harris detector textit{R} can be computed for each pixel. Specifically, the matrix R has been computed from M using the formula:
 
+\begin{equation}
+	R = det(M) - k \cdot tr(M)
+\end{equation}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{"mainmatter/Images/partial derivative and gaussian filter"}
+	\caption{Partial derivative and Gaussian filter}
+	\label{fig:partial-derivative-and-gaussian-filter}
+\end{figure}
+
+After obtaining these matrices, the threshold used to detect the corner regions was set to 30\% of the maximum value of the R map. Then, using the "regionprops" function, the centroids of each corner region were successfully identified and plotted over our image, as we can see in figure \ref{fig:corner-detection-over-image}. 
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\linewidth]{"mainmatter/Images/Corner detection over image"}
+	\caption{Harris corner detection}
+	\label{fig:corner-detection-over-image}
+\end{figure}
 \newpage
 \section*{Conclusions}
 
