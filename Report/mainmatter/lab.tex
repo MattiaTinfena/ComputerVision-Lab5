@@ -5,6 +5,37 @@ In computer vision recognize object is a key feature. In this report we will ana
 In the second part of the report, we will evaluate a technique to detect keypoint in images, in particoular corners. These are important because are invariant for some properties such as: translation, rotation and partially color's intensity change. To do this we will use the Harris corner detection algorithm.
 \chapter{NCC-based segmentation}
 
+In this first part of the lab, it was requested to apply the Normalized Cross Correlation (NCC) to 6 images rapresenting two moving cars.\\
+Firstly, we convert the images in a gray scale; then, we have to extract threee templates of the black car($T_{11}, T_{12}, T_{13}$) and one of the red car ($T$) form 
+the first image ($ur\_c\_s\_03a\_01\_L\_0376.png$), in order to be able to detect them.
+The templates are created specifying the coordinates of the points which allows to buil a bounding box around the two cars. Once the templates and have been acquired and a vector 
+$t$ is created, containing them all, we upload the whole set of images.
+Now two for cycles are initialized: one for the red car and one for the black one. Their goal is the same: computing the centroid coordinates, the bounding box of the cars
+and plotting them on the original images.\\
+Each for cycle firstly acquires the vector containing all the images and, on each of them, the NCC is applied; this passage is implemented in a specific function called $ncc$.\\ 
+Here, the input image is converted in a gray scale and $normxcross2$ function is applied, giving as output a binary image, called \textbf{score map}. 
+The score map has the same size as the original image, but presents a white spot in the region that best matches the the input template and the image.
+Then the $ncc$ function calculates and returns to the main the coordinates of the white spot present in the score map.\\
+At this point the $cbs$ function is applied, which requires as input the original image. In this function, the picture is firsty converted in a HSV scale and
+secondly the H channel is isolated.\\
+After that, a binary image called \textbf{mask} is created identifying all the points whose value belongs to the interval $[0.97, 1]$.
+The mask is then given as input to a function called $bwlable$, which is available in Matlab; this function creates a new binary image called \textbf{images\_seg1} which is the sum 
+between the mask and a picture composed by all zeros (all pixels are black). Together with the usage of $regionprops$, this picture allows us to find the centroid of the cars 
+and the bounding box around them, which are returned as outputs to the main function.\\
+We now subplot the original images with the centroid and the bounding box on them. 
+WE ARE SUPPOSED TO SEE THE CENTROID CENTERED IN THE TEMPLATE AND THE BOUNDING BOX BUILT AROUND IT.\\
+
+\subparagraph{Comparison between image identification based on color-based segmentation}
+In order to being able to compare the results obtained with the two methods, we plotted on the original images also the centroid and the bounding box found by the 
+color-based segmentation.\\ It can be seen that for the red car both methods are valid, but for the black car NCC is clearly the best choice. In fact, NCC tracks precisely the
+black car in all the images, while color-based segmentation sometimes struggles with this task, reducing accuracy or even including extraneus elements of the surrounding 
+environment, causing the bouding box and the cenrtoid to be slightly different from the desiderd ones.
+
+\subparagraph{Comparison between different templates}
+For the black car we also wanted to see what changed using different sizes of templates.
+
+
+
 
 
 \chapter{Harris corner detection}
