@@ -39,8 +39,59 @@ For the black car we also wanted to see what changed using different sizes of te
 
 
 \chapter{Harris corner detection}
+The Harris Corner Detector is a method used to detect corners by identifying points with significant gradient changes in all directions. Specifically, a corner is a point whose local neighborhood exhibits two dominant and distinct edge directions. Accordingly, the Harris Corner Detector finds these difference in intensity for a given shift $(u, v)$ in all possible directions, which can be expressed mathematically in terms of both shift and derivatives for small motions as follows:
 
+\begin{equation}
+	E(u, v) = \sum_{x, y} w(x, y) [I(x+u, y+v)-I(x, y)]^2 \approx \sum_{x, y} I_x^2 u^2 + 2I_x I_y uv + I_y^2 v^2
+\end{equation}
 
+In fact, estimating derivatives is generally important, as sharp changes in an image can be associated with object boundaries. Using Sobel filters, we can compute the partial derivatives of the image in the x and y directions, as well as their second derivatives (see figure \ref{fig:partial-derivative-and-gaussian-filter}).
+
+\begin{minipage}{0.45\textwidth}
+	\centering
+	\begin{equation}
+		dx = \begin{bmatrix}
+			1 & 0 & -1 \\
+			2 & 0 & -2 \\
+			1 & 0 & -1
+		\end{bmatrix}
+		\label{eq:dx}
+	\end{equation}
+\end{minipage}
+\hfill 
+\begin{minipage}{0.45\textwidth}
+	\centering
+	\begin{equation}
+		dy = \begin{bmatrix}
+			1 & 2 & 1 \\
+			0 & 0 & 0 \\
+			-1 & -2 & -1
+		\end{bmatrix}
+		\label{eq:dy}
+	\end{equation}
+\end{minipage}
+
+After applying a Gaussian filter to reduce noise, the structure tensor textit{M} and the response of the Harris detector textit{R} can be computed for each pixel. Specifically, the matrix R has been computed from M using the formula:
+
+\begin{equation}
+	R = det(M) - k \cdot tr(M)
+\end{equation}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{"mainmatter/Images/partial derivative and gaussian filter"}
+	\caption{Partial derivative and Gaussian filter}
+	\label{fig:partial-derivative-and-gaussian-filter}
+\end{figure}
+
+After obtaining these matrices, the threshold used to detect the corner regions was set to 30\% of the maximum value of the R map. Then, using the "regionprops" function, the centroids of each corner region were successfully identified and plotted over our image, as we can see in figure \ref{fig:corner-detection-over-image}. 
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\linewidth]{"mainmatter/Images/Corner detection over image"}
+	\caption{Harris corner detection}
+	\label{fig:corner-detection-over-image}
+\end{figure}
 \newpage
 \section*{Conclusions}
 
