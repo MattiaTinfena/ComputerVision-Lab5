@@ -1,6 +1,8 @@
 \chapter*{Introduction}
 
+In computer vision recognize object is a key feature. In this report we will analize some of the most common techniques to detect objects in 2D images, starting with the blob detection through the Normilized Cross-Correlation (NCC). There we will analyze as different sizes of template will affect the bolb recognition and the computation time. Then, we will compare the results obtained with the ones obtained detecting blobs with the multi-resolution pyramid. We will use this techniques to detect a red car and a dark car in different images analyzing as different algorithms detect these cars in different ways.
 
+In the second part of the report, we will evaluate a technique to detect keypoint in images, in particoular corners. These are important because are invariant for some properties such as: translation, rotation and partially color's intensity change. To do this we will use the Harris corner detection algorithm.
 \chapter{NCC-based segmentation}
 
 
@@ -12,4 +14,11 @@
 \section*{Conclusions}
 
 
+-NCC funziona tanto meglio quanto più grande è il template, e il tempo di computazione è direttamente proporzionale alla dimensione del template perchè la cross-correlazione è un'operazione molto costosa e il numero di operazioni da fare è direttamente proporzionale alla dimensione del template.
+
+-CBS funziona bene per template piccoli perchè hanno colori più uniformi e quindi più facilmente riconoscibili, mentre per template grandi non funziona bene perchè il colore è più vario e quindi la cross-correlazione funziona meglio.
+
+-Per identificare la macchina rossa, essendop l'unico elemento roso nella foto  è facilmente identificabile ed entrambi i metodi funzionano bene ma NCC ci mette 0.09 sec mentre cbs ci mette 0.22 sec, 
+
+- Harris detection funziona bene
 
