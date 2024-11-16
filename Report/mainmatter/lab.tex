@@ -5,47 +5,52 @@ In computer vision recognize object is a key feature. In this report we will ana
 In the second part of the report, we will evaluate a technique to detect keypoint in images, in particoular corners. These are important because are invariant for some properties such as: translation, rotation and partially color's intensity change. To do this we will use the Harris corner detection algorithm.
 \chapter{NCC-based segmentation}
 
-In this first part of the lab, it was requested to apply the Normalized Cross Correlation (NCC) to 6 images rapresenting two moving cars.\\
-Firstly, we convert the images in a gray scale; then, we have to extract threee templates of the black car($T_{11}, T_{12}, T_{13}$) and one of the red car ($T$) form 
+In this first part of the lab, it was requested to apply the Normalized Cross Correlation (NCC) to 6 images 
+rapresenting two moving cars.\\
+Firstly, we convert the images in a gray scale; then, we have to extract threee templates of the black 
+car($T_{11}, T_{12}, T_{13}$) and one of the red car ($T$) form 
 the first image ($ur\_c\_s\_03a\_01\_L\_0376.png$), in order to be able to detect them.
-The templates are created specifying the coordinates of the points which allows to buil a bounding box around the two cars. Once the templates and have been acquired and a vector 
+The templates are created specifying the coordinates of the points which allows to buil a bounding box around the 
+two cars. Once the templates and have been acquired and a vector 
 $t$ is created, containing them all, we upload the whole set of images.
-Now two for cycles are initialized: one for the red car and one for the black one. Their goal is the same: computing the centroid coordinates, the bounding box of the cars
+Now two for cycles are initialized: one for the red car and one for the black one. Their goal is the same: computing
+the centroid coordinates, the bounding box of the cars
 and plotting them on the original images.\\
-Each for cycle firstly acquires the vector containing all the images and, on each of them, the NCC is applied; this passage is implemented in a specific function called $ncc$.\\ 
-Here, the input image is converted in a gray scale and $normxcross2$ function is applied, giving as output a binary image, called \textbf{score map}. 
-The score map has the same size as the original image, but presents a white spot in the region that best matches the the input template and the image.
-Then the $ncc$ function calculates and returns to the main the coordinates of the white spot present in the score map.\\
-At this point the $cbs$ function is applied, which requires as input the original image. In this function, the picture is firsty converted in a HSV scale and
+Each for cycle firstly acquires the vector containing all the images and, on each of them, the NCC is applied; this 
+passage is implemented in a specific function called $ncc$.\\ 
+Here, the input image is converted in a gray scale and $normxcross2$ function is applied, giving as output a binary 
+image, called \textbf{score map}. 
+The score map has the same size as the original image, but presents a white spot in the region that best matches the 
+the input template and the image.
+Then the $ncc$ function calculates and returns to the main the coordinates of the white spot present in the score 
+map.\\
+At this point the $cbs$ function is applied, which requires as input the original image. In this function, the 
+picture is firsty converted in a HSV scale and
 secondly the H channel is isolated.\\
-After that, a binary image called \textbf{mask} is created identifying all the points whose value belongs to the interval $[0.97, 1]$.
-The mask is then given as input to a function called $bwlable$, which is available in Matlab; this function creates a new binary image called \textbf{images\_seg1} which is the sum 
-between the mask and a picture composed by all zeros (all pixels are black). Together with the usage of $regionprops$, this picture allows us to find the centroid of the cars 
+After that, a binary image called \textbf{mask} is created identifying all the points whose value belongs to the 
+interval $[0.97, 1]$, which are the values of the hue-channel corresponding to red.
+The mask is then given as input to a function called $bwlable$, which is available in Matlab; this function 
+creates a new binary image called \textbf{images\_seg1} which is the sum 
+between the mask and a picture composed by all zeros (all pixels are black). Together with the usage of 
+$regionprops$, this picture allows us to find the centroid of the cars 
 and the bounding box around them, which are returned as outputs to the main function.\\
-We now subplot the original images with the centroid and the bounding box on them. 
-WE ARE SUPPOSED TO SEE THE CENTROID CENTERED IN THE TEMPLATE AND THE BOUNDING BOX BUILT AROUND IT.\\
-
-\subparagraph{Comparison between image identification based on color-based segmentation}
-In order to being able to compare the results obtained with the two methods, we plotted on the original images also the centroid and the bounding box found by the 
-color-based segmentation.\\ It can be seen that for the red car both methods are valid, but for the black car NCC is clearly the best choice. In fact, NCC tracks precisely the
-black car in all the images, while color-based segmentation sometimes struggles with this task, reducing accuracy or even including extraneus elements of the surrounding 
-environment, causing the bouding box and the cenrtoid to be slightly different from the desiderd ones.
-
-\subparagraph{Comparison between different templates}
-For the black car we also wanted to see what changed using different sizes of templates.
-
-
-
+We now subplot the original images with the centroid and the bounding box on them.
 
 
 \chapter{Harris corner detection}
-The Harris Corner Detector is a method used to detect corners by identifying points with significant gradient changes in all directions. Specifically, a corner is a point whose local neighborhood exhibits two dominant and distinct edge directions. Accordingly, the Harris Corner Detector finds these difference in intensity for a given shift $(u, v)$ in all possible directions, which can be expressed mathematically in terms of both shift and derivatives for small motions as follows:
+The Harris Corner Detector is a method used to detect corners by identifying points with significant gradient 
+changes in all directions. Specifically, a corner is a point whose local neighborhood exhibits two dominant and 
+distinct edge directions. Accordingly, the Harris Corner Detector finds these difference in intensity for a given 
+shift $(u, v)$ in all possible directions, which can be expressed mathematically in terms of both shift and 
+derivatives for small motions as follows:
 
 \begin{equation}
 	E(u, v) = \sum_{x, y} w(x, y) [I(x+u, y+v)-I(x, y)]^2 \approx \sum_{x, y} I_x^2 u^2 + 2I_x I_y uv + I_y^2 v^2
 \end{equation}
 
-In fact, estimating derivatives is generally important, as sharp changes in an image can be associated with object boundaries. Using Sobel filters, we can compute the partial derivatives of the image in the x and y directions, as well as their second derivatives (see figure \ref{fig:partial-derivative-and-gaussian-filter}).
+In fact, estimating derivatives is generally important, as sharp changes in an image can be associated with object 
+boundaries. Using Sobel filters, we can compute the partial derivatives of the image in the x and y directions, as 
+well as their second derivatives (see figure \ref{fig:partial-derivative-and-gaussian-filter}).
 
 \begin{minipage}{0.45\textwidth}
 	\centering
@@ -71,7 +76,9 @@ In fact, estimating derivatives is generally important, as sharp changes in an i
 	\end{equation}
 \end{minipage}
 
-After applying a Gaussian filter to reduce noise, the structure tensor textit{M} and the response of the Harris detector textit{R} can be computed for each pixel. Specifically, the matrix R has been computed from M using the formula:
+After applying a Gaussian filter to reduce noise, the structure tensor textit{M} and the response of the Harris 
+detector textit{R} can be computed for each pixel. Specifically, the matrix R has been computed from M using the 
+formula:
 
 \begin{equation}
 	R = det(M) - k \cdot tr(M)
@@ -84,7 +91,9 @@ After applying a Gaussian filter to reduce noise, the structure tensor textit{M}
 	\label{fig:partial-derivative-and-gaussian-filter}
 \end{figure}
 
-After obtaining these matrices, the threshold used to detect the corner regions was set to 30\% of the maximum value of the R map. Then, using the "regionprops" function, the centroids of each corner region were successfully identified and plotted over our image, as we can see in figure \ref{fig:corner-detection-over-image}. 
+After obtaining these matrices, the threshold used to detect the corner regions was set to 30\% of the maximum 
+value of the R map. Then, using the "regionprops" function, the centroids of each corner region were successfully 
+identified and plotted over our image, as we can see in figure \ref{fig:corner-detection-over-image}. 
 
 \begin{figure}
 	\centering
@@ -92,15 +101,34 @@ After obtaining these matrices, the threshold used to detect the corner regions 
 	\caption{Harris corner detection}
 	\label{fig:corner-detection-over-image}
 \end{figure}
+
+
+
 \newpage
 \section*{Conclusions}
+For both the red and the black car we saw that the templates given are working correctly; in fact, the bounding 
+box and the cetroid are placed correctly on the original image.\\
+We also plotted the results obtained using different sizes of templates with both NCC and color-based segmentation 
+in order to being able to compare them.\\
+It was observed that NCC works nicely every time, but the bigger the template gets, the more efficient it becomes; its 
+precision in detecting the desired object is highter and the computational time decreases when large templates are 
+considered. On the other hand, the color-based segmentation works fine with smaller templates, since they are more 
+likely to present a more uniform pattern in terms of color; in fact, being this method based on color recognition, 
+having a template with less variations of intensity makes the computation faster and more precise.\\
+For the reasons reported above, we can affirm that, while with small template CBS works better, when we have to 
+work with big template NCC is the best option.\\
+Passing now to the computational time, we analysed both NCC and CBS algorithms on the same template and 
+then we measured the time they require to obtain the results.\\
+A particular focus should be paid when we consider the template with the red car in it. In this case, the car 
+is easily detectable with both methods, being the only red object in the image; however, the computational time of the two 
+algotirhms is very different: NCC takes just 0.09 seconds to compute the result, while CBS requires 0.22 seconds.\\
+Eventually, we can affirm that Harris-corner detection works fine in general. Nevertheless, some points detected 
+do not correspond to any edge, as can be seen around the two people in the figure, while there are some edges 
+that have been omitted.\\
+This behaviour of the Harris-corner detection can be traced back to the way the algorithm works; in fact, it tends to 
+detect more points in the foreground, while it is likely that the non-identified points are placed in the background.
 
 
--NCC funziona tanto meglio quanto più grande è il template, e il tempo di computazione è direttamente proporzionale alla dimensione del template perchè la cross-correlazione è un'operazione molto costosa e il numero di operazioni da fare è direttamente proporzionale alla dimensione del template.
 
--CBS funziona bene per template piccoli perchè hanno colori più uniformi e quindi più facilmente riconoscibili, mentre per template grandi non funziona bene perchè il colore è più vario e quindi la cross-correlazione funziona meglio.
 
--Per identificare la macchina rossa, essendop l'unico elemento roso nella foto  è facilmente identificabile ed entrambi i metodi funzionano bene ma NCC ci mette 0.09 sec mentre cbs ci mette 0.22 sec, 
-
-- Harris detection funziona bene
 
