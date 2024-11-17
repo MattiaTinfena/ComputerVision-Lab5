@@ -30,7 +30,7 @@ for k = 1:3
 end
 
 image_files = {"ur_c_s_03a_01_L_0376.png", "ur_c_s_03a_01_L_0377.png", "ur_c_s_03a_01_L_0378.png","ur_c_s_03a_01_L_0379.png", "ur_c_s_03a_01_L_0380.png", "ur_c_s_03a_01_L_0381.png"};
-
+str = {'regular template', 'small template', 'large template'};
 %Red car detection
 figure;
 for k = 1:length(image_files)
@@ -63,16 +63,8 @@ for i = 1:3
         hold off;
     end
     times{i} = toc;
-    if i == 1
-        sgtitle('Normalized Cross-Correlation results to detect the dark car (Regoular template)');
-        disp(['NCC (regoular template) execution time: ',num2str(times{i}), ' seconds']);
-    elseif i == 2
-        sgtitle('Normalized Cross-Correlation results to detect the dark car (Small template)');
-        disp(['NCC (small template) execution time: ',num2str(times{i}), ' seconds']);
-    else
-        sgtitle('Normalized Cross-Correlation results to detect the dark car (Large template)');
-        disp(['NCC (large template) execution time: ',num2str(times{i}), ' seconds']);
-    end
+    sgtitle(['Normalized Cross-Correlation results to detect the dark car ', str{i}]);
+    disp(['NCC (', str{i}, ') execution time: ',num2str(times{i}), ' seconds']);
 end
 
 %% Harris corner detection
