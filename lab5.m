@@ -65,12 +65,14 @@ for i = 1:3
     times{i} = toc;
     if i == 1
         sgtitle('Normalized Cross-Correlation results to detect the dark car (Regoular template)');
+        disp(['NCC (regoular template) execution time: ',num2str(times{i}), ' seconds']);
     elseif i == 2
         sgtitle('Normalized Cross-Correlation results to detect the dark car (Small template)');
+        disp(['NCC (small template) execution time: ',num2str(times{i}), ' seconds']);
     else
         sgtitle('Normalized Cross-Correlation results to detect the dark car (Large template)');
+        disp(['NCC (large template) execution time: ',num2str(times{i}), ' seconds']);
     end
-    disp(['execution ', num2str(i), ' time: ',num2str(times{i}), ' seconds']);
 end
 
 %% Harris corner detection
